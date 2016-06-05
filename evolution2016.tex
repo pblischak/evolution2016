@@ -1,8 +1,8 @@
-\documentclass[presentation,serif]{beamer}
-\renewcommand\rmdefault{ppl}
+\documentclass[presentation,sansserif]{beamer}
+\usefonttheme[onlymath]{serif}
 %\renewcommand\mathfamilydefault{ppl}
-\usetheme{Warsaw}
-%\usecolortheme{default}
+%\usetheme{Warsaw}
+%\usecolortheme{beetle}
 \usepackage {mathpazo}
 
 \title[Developing pop-gen models for polyploids]{Developing models for genotype uncertainty, inbreeding, and allelic inheritance in non-model polyploids}
@@ -12,12 +12,16 @@
 
 \date{}
 
-\definecolor{headers}{RGB}{0,102,0}
-\definecolor{itemcol}{RGB}{8,81,156}
-\setbeamercolor{alerted text}{fg=blue}
+\definecolor{itemcol}{RGB}{0,128,255}
+\definecolor{back}{RGB}{1,22,39}
+\setbeamercolor{alerted text}{fg=purple!90!black}
 \setbeamercolor{section in toc}{fg=black, bg=black}
 \setbeamercolor{item}{fg=itemcol,bg=itemcol}
-\setbeamercolor{structure}{fg=headers!95!black}
+\setbeamercolor{structure}{fg=itemcol!95!black}
+\setbeamercolor{background canvas}{bg=white!15!black}
+%\setbeamercolor{background canvas}{bg=back}
+\setbeamercolor{normal text}{fg=white!95!black, bg=white!95!black}
+\setbeamercolor{math text}{fg=white, bg=white}
 %\setbeamertemplate{items}[square]
 %\setbeamertemplate{items in toc shaded}[square]
 %\setbeamertemplate{items in toc}[square]
