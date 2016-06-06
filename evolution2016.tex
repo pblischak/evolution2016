@@ -4,6 +4,8 @@
 %\usetheme{Warsaw}
 %\usecolortheme{beetle}
 \usepackage {mathpazo}
+\usepackage{graphicx}
+\usepackage{blindtext}
 
 \title[Developing pop-gen models for polyploids]{Developing models for genotype uncertainty, inbreeding, and allelic inheritance in non-model polyploids}
 \author[Blischak \textit{et al}.]{Paul Blischak$^1$ :: Laura Kubatko$^{1,2}$ :: Andrea Wolfe$^1$}
@@ -14,7 +16,7 @@
 
 \definecolor{itemcol}{RGB}{0,128,255}
 \definecolor{back}{RGB}{1,22,39}
-\setbeamercolor{alerted text}{fg=purple!90!black}
+\setbeamercolor{alerted text}{fg=magenta!50!pink}
 \setbeamercolor{section in toc}{fg=black, bg=black}
 \setbeamercolor{item}{fg=itemcol,bg=itemcol}
 \setbeamercolor{structure}{fg=itemcol!95!black}
@@ -41,6 +43,7 @@
 		}
 		
 \end{frame}
+
 
 %%%%
 \section{A brief history}
@@ -253,11 +256,41 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}[c,plain]{}
+{ \setbeamercolor{background canvas}{bg=white!20!black}
+\begin{frame}[c,plain]{Disequilibrium model}
+	\framesubtitle{Log-likelihood surface}
 	\begin{center}
-		%\includegraphics[width=0.7\textwidth]{fig/figure2-tetra-heatmaps}
+		\frame{\includegraphics[width=\textwidth]{freq-phi-lik-surf2}}
 	\end{center}
 \end{frame}
+}
+
+{ \setbeamercolor{background canvas}{bg=white!20!black} %\setbeamercolor{math text}{fg=itemcol, bg=itemcol}
+\begin{frame}[c,plain]{Allopolyploid subgenome model}
+	\framesubtitle{Log-likelihood surface: $F_{st}=0.1$}
+	\begin{center}
+		\frame{\includegraphics[width=\textwidth]{freq1-freq2-lik-surf1}}
+	\end{center}
+\end{frame}
+}
+
+{ \setbeamercolor{background canvas}{bg=white!20!black} %\setbeamercolor{math text}{fg=itemcol, bg=itemcol}
+\begin{frame}[c,plain]{Allopolyploid subgenome model}
+	\framesubtitle{Log-likelihood surface: $F_{st}=0.5,\, \pi=0.475,\, p_1=0.962,\, p_2=0.343$}
+	\begin{center}
+		\frame{\includegraphics[width=\textwidth]{freqs1-freqs2-bad-lik-surf1}}
+	\end{center}
+\end{frame}
+}
+
+{ \setbeamercolor{background canvas}{bg=white!20!black} %\setbeamercolor{math text}{fg=itemcol, bg=itemcol}
+\begin{frame}[c,plain]{Allopolyploid subgenome model}
+	\framesubtitle{Log-likelihood surface: $F_{st}=0.5,\, \pi=0.922,\, p_1=0.999,\, p_2=0.414$}
+	\begin{center}
+		\frame{\includegraphics[width=\textwidth]{freqs1-freqs2-bad-lik-surf3}}
+	\end{center}
+\end{frame}
+}
 
 \begin{frame}[c,plain]{}
 
