@@ -16,7 +16,9 @@
 
 \definecolor{itemcol}{RGB}{0,128,255}
 \definecolor{back}{RGB}{1,22,39}
-\setbeamercolor{alerted text}{fg=magenta!50!pink}
+\definecolor{alert}{RGB}{255,0,81}
+\definecolor{yell}{RGB}{255,222,0}
+\setbeamercolor{alerted text}{fg=alert}
 \setbeamercolor{section in toc}{fg=black, bg=black}
 \setbeamercolor{item}{fg=itemcol,bg=itemcol}
 \setbeamercolor{structure}{fg=itemcol!95!black}
@@ -28,239 +30,154 @@
 %\setbeamertemplate{items in toc shaded}[square]
 %\setbeamertemplate{items in toc}[square]
 
+\newcommand{\inline}[1]{\fcolorbox{white!15!black}{white!20!black}{\texttt{#1}}}
+
+\setbeamertemplate{navigation symbols}{% 
+%\insertslidenavigationsymbol 
+%\insertframenavigationsymbol 
+%\insertsubsectionnavigationsymbol 
+%\insertsectionnavigationsymbol 
+%\insertdocnavigationsymbol 
+%\insertbackfindforwardnavigationsymbol \hspace{1em}%
+ \usebeamerfont{footline} \insertframenumber/\inserttotalframenumber% 
+ }
+
 \begin{document}
 
+\beamertemplatenavigationsymbolsempty
+
 \begin{frame}[plain]
+	\vspace{-1.2in}
 	\titlepage
 	
-		%\includegraphics[width=0.45\textwidth]{figs/eeob-logo} \hfill \includegraphics[width=0.25\textwidth]{figs/PolyploidyLogo}
-		{\footnotesize Ohio State University
+	\vspace{-1.2in}
+	\begin{center}
+	
+		{\footnotesize Ohio State University 	
 		\vspace{0.05in}
 		
-		$^1$Department of EEOB
-		
-		$^2$Department of Statistics
-		}
+		$^1$Department of EEOB :: $^2$Department of Statistics
+		}		
+	\end{center}
+	\vspace{-0.2in}
 		
 \end{frame}
 
 
-%%%%
-\section{A brief history}
-%%%%
+\begin{frame}[t]{The world of polyploidy}
 
-%%
-\subsection{Early theory}
-%%
+  
 
-\begin{frame}[t]{A brief history}
-	\framesubtitle{Early theory}
-	The usual suspects:
-	\begin{itemize}
-		\item \textbf{Fisher} -- Models for polysomic inheritance of trimorphic style w/ double reduction in \textit{Lythrum salicaria}.
-		\item \textbf{Haldane} -- Models for determining gamete frequencies w/ partial selfing.
-		\item \textbf{Wright} -- Models for the distribution of allele frequencies subject to selection, migration and inbreeding.
-	\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{The world of polyploidy}
+\framesubtitle{Types of polyploids}
+
+	\onslide<2->{\textbf{Autopolyploids}:}
+	%\pause
 
 	\begin{center}
-		%\includegraphics[width=0.75\textwidth]{fig/fisher-haldane-wright}
+		\onslide<3->{\includegraphics[width=0.5\textwidth]{eps/autopolyploid-formation}}
+	\end{center}
+	%\pause
+	
+	\onslide<2->{\textbf{Allopolyploids}:}
+	%\pause
+	
+	\begin{center}
+		\onslide<4->{\includegraphics[width=0.5\textwidth]{eps/allopolyploid-formation}}
 	\end{center}
 
 \end{frame}
-
-%%
-\subsection{Empirical motivation}
-%%
-
-\begin{frame}[t]{Empirical motivation}
-	There was a particularly fruitful synergism between the theoretical and empirical work being done for polyploids during the Modern Synthesis.
-	\vspace{0.1in}
-
-	\begin{center}
-		%\includegraphics[width=\textwidth]{fig/barlow-mather}
-	\end{center}
-\end{frame}
-
-%%%%
-\section{Polyploid pop-gen}
-%%%%
-
-%%
-\subsection{Challenges}
-%%
 
 \begin{frame}[t]{Polyploid pop-gen}
-\framesubtitle{Challenges}
-	The difficulties of making population genetic inferences in polyploids present themselves at two broad levels:
-	\vspace{0.1in}
+  \framesubtitle{Challenges}
+  
+  \vspace{0.1in}
+  The difficulties of making population genetic inferences in polyploids present themselves at two broad levels:
+  \vspace{0.2in}
+  \pause
 
 	\begin{enumerate}
-		\item \textbf{Allelic Dosage Uncertainty}: the inability to fully resolve the genotype of a partially heterozygous polyploid individual for a codominant marker (microsatellite, SNP).
+		\item \textbf{Allelic dosage}: difficult to determine the number of allele copies.
+		\vspace{0.1in}
+		
+		\begin{itemize}
+			\item Ex: Two alleles are present in a tetraploid. Is the genotype ABBB, AABB, or AAAB?
+		\end{itemize}
 		\vspace{0.2in}
+		\pause
 
-		\item \textbf{Allelic inheritance}: disomic vs. polysomic vs. heterosomic, selfing, clonal, double reduction, etc.
+		\item \textbf{Allelic inheritance}: how do chromosomes pair during meiosis? Do subgenomes interact?
 	\end{enumerate}
-
-
+	
 \end{frame}
 
-%%
-\subsection{Allelic Dosage Uncertainty}
-%%
-
-\begin{frame}[t]{Allelic Dosage Uncertainty (ADU)}
-	\textit{...the inability to fully resolve the genotype of a partially heterozygous polyploid individual for a codominant marker.}
+\begin{frame}[t]{Dealing with allelic dosage}
+	\pause
 	\vspace{0.1in}
+	Account for genotype uncertainty...
+	\vspace{0.2in}
 
 	\begin{itemize}
-		\item \textbf{Partial heterozygote} -- when the number of observed alleles at a locus is less than the ploidy level and not equal to 1 (i.e., is homozygous).
+	\setlength\itemsep{0.2in}
+		\item Our previous model used a hierarchical setup for high throughput sequencing (HTS) data, genotypes, and allele frequencies.
 		\vspace{0.1in}
+		\pause
 
-		\item \textbf{Ex}: For a locus with observed alleles A, B and C in a tetraploid (4N), the possible genotypes are AABC, ABBC or ABCC.
+		\item Joint inference on genotypes and frequencies using Gibbs sampling (implemented in the R package \textbf{polyfreqs}).
 		\vspace{0.1in}
+		\pause
 
-		\item The higher the ploidy, the worse the problem.
+		\item Turns out there is a better way \pause $\rightarrow$ (1) don't sample genotypes\pause, (2) don't use Gibbs sampling (too expensive).
 		\vspace{0.1in}
-
-		\item Biallelic SNPs will always be partially heterozygous for a polyploid.
 
 	\end{itemize}
 
 \end{frame}
 
-%%
-\subsection{Overcoming ADU}
-%%
+\begin{frame}[t]{Dealing with allelic dosage}
+	\framesubtitle{Genotype likelihoods}
 
-\begin{frame}[t]{Overcoming ADU}
-	For a biallelic locus, such as a SNP, we can use techniques like RAD sequencing to ``sample" from the genotype (model with binomial probability distribution*).
+	Instead, we pre-compute genotype likelihoods (e.g., using GATK).
 	\vspace{0.2in}
-
-	\begin{center}
-		%\includegraphics[width=\textwidth]{fig/pop-gen-model-empty}
-	\end{center}
+	\pause
+	
+	$R$ -- HTS data (reads and per-base errors)
+	
+	$m$ -- ploidy-level
+	
+	$G$ -- genotype $(0,\dots,m)$
+	
+	$p$ -- allele frequency
+	
 
 	\pause
 	\begin{equation*}
-	P(10 \text{ red reads}|k \text{ red alleles}) = \binom{16}{10}\left(\frac{k}{4}\right)^{10}\left(1-\frac{k}{4}\right)^6
+		\mathcal{L}(G) = P(R|G).
+	\end{equation*}
+	
+	\begin{equation*}
+		\mathcal{L}(p) = P(R|p) = \sum_G P(R|G)P(G|p)
+	\end{equation*}
+	\vspace{-0.2in}
+	\pause
+	
+	\begin{equation*}
+		= \sum_G \mathcal{L}(G)P(G|p).
 	\end{equation*}
 
 \end{frame}
 
-\begin{frame}[t]{Overcoming ADU}
-	For a biallelic locus, such as a SNP, we can use techniques like RAD sequencing to ``sample" from the genotype (model with binomial probability distribution*).
-	\vspace{0.2in}
+\begin{frame}[t]{Assumptions}
 
-	\begin{center}
-		%\includegraphics[width=\textwidth]{fig/pop-gen-model-empty}
-	\end{center}
-
-	\vspace{0.1in}
-	Let's translate the entire illustration into something more mathematical.
-\end{frame}
-
-\begin{frame}[c]{A hierarchical model for polyploids}
-	$p_{\ell}$ -- allele frequency at locus $\ell$. \\
-	$g_{i \ell}$ -- genotype for individual $i$ at locus $\ell$. \\
-	$r_{i \ell}$ -- sequencing reads for individual $i$ at locus $\ell$.
-	\vspace{0.1in}
-	\begin{center}
-		%\includegraphics[width=0.6\textwidth]{fig/figure1-model-graph}
-	\end{center}
-\end{frame}
-
-\begin{frame}[c]{Read count likelihood}
-
-	Binomial likelihood with error:
-
-	\begin{equation*}
-		r_{i\ell}|t_{i\ell},g_{i\ell},\epsilon \sim \text{binomial}(p = \mathcal{G}_\epsilon(g_{i\ell}), n = t_{i\ell}),
-	\end{equation*}
-	\pause
-	\begin{equation}
-		P(r_{i\ell}|t_{i\ell},g_{i\ell},\epsilon) = \binom{t_{i\ell}}{r_{i\ell}} \mathcal{G}_\epsilon(g_{i\ell})^{r_{i\ell}}(1 - \mathcal{G}_\epsilon(g_{i\ell}))^{(t_{i\ell}-r_{i\ell})}.
-	\end{equation}
-	\pause
-
-	\vspace{0.25in}
-
-	Genotype error correction:
-
-	\begin{equation}
-		\mathcal{G}_\epsilon(g_{i\ell}) = \frac{g_{i\ell}}{\psi}(1 - \epsilon) + \left(1 - \frac{g_{i\ell}}{\psi}\right)\epsilon\,.
-	\end{equation}
-
-\end{frame}
-
-\begin{frame}[c]{Genotype likelihood}
-
-	Binomially distributed:
-
-	\begin{equation*}
-		g_{i\ell}|p_\ell \sim \text{binomial}(p = p_\ell, n = \psi),
-	\end{equation*}
-	\pause
-
-	\begin{equation}
-		P(g_{i\ell}|p_\ell) = \binom{\psi}{g_{i\ell}} p_\ell ^ {\;g_{i\ell}} (1 - p_\ell)^{\psi - g_{i\ell}}.
-	\end{equation}
-
-
-
-\end{frame}
-
-\begin{frame}[c]{A hierarchical model for polyploids}
-	\fontsize{10pt}{10}\selectfont
-	\vspace{-0.21in}
-	\begin{equation}
-		P(\mathbf{p} \vert R) \propto\, \sum_{g \in G} \; P(R \vert G) P(G \vert \mathbf{p}) P(\mathbf{p})
-	\end{equation}
-
-	\begin{center}
-		%\includegraphics[width=0.6\textwidth]{fig/figure1-model-graph}
-	\end{center}
-\end{frame}
-
-%%%%
-\section{Simulations}
-%%%%
-
-%%
-\subsection{Setup}
-%%
-
-\begin{frame}[t]{Simulations}
-	\framesubtitle{Setup}
-
-	We used the following settings for the simulations to test our model:
-	\vspace{0.1in}
-
-	\begin{itemize}
-		\item Tetraploids (4N) and hexaploids (6N).
-		\item Allele frequencies: 0.01, 0.05, 0.1, 0.2, 0.4.
-		\item Sequencing coverage (average \# of reads per individual per locus): 5x, 10x, 20x, 50x, 100x.
-		\item Number of individuals sampled: 5, 10, 20, 30.
-	\end{itemize}
-\end{frame}
-
-%%
-\subsection{Results}
-%%
-
-\begin{frame}[c]{Results}
-	\framesubtitle{Heatmaps}
-	\textbf{x-axis}: \# of individuals, \textbf{y-axis}: coverage, \textbf{scale}: error (s.d.)
-	\pause
-	\begin{center}
-		%\includegraphics[width=0.85\textwidth]{fig/hex-plot0-05}
-	\end{center}
 \end{frame}
 
 { \setbeamercolor{background canvas}{bg=white!20!black}
 \begin{frame}[c,plain]{Disequilibrium model}
 	\framesubtitle{Log-likelihood surface}
 	\begin{center}
-		\frame{\includegraphics[width=\textwidth]{freq-phi-lik-surf2}}
+		\frame{\includegraphics[width=\textwidth]{pdf/freq-phi-lik-surf2}}
 	\end{center}
 \end{frame}
 }
@@ -269,7 +186,7 @@
 \begin{frame}[c,plain]{Allopolyploid subgenome model}
 	\framesubtitle{Log-likelihood surface: $F_{st}=0.1$}
 	\begin{center}
-		\frame{\includegraphics[width=\textwidth]{freq1-freq2-lik-surf1}}
+		\frame{\includegraphics[width=\textwidth]{pdf/freq1-freq2-lik-surf1}}
 	\end{center}
 \end{frame}
 }
@@ -278,7 +195,7 @@
 \begin{frame}[c,plain]{Allopolyploid subgenome model}
 	\framesubtitle{Log-likelihood surface: $F_{st}=0.5,\, \pi=0.475,\, p_1=0.962,\, p_2=0.343$}
 	\begin{center}
-		\frame{\includegraphics[width=\textwidth]{freqs1-freqs2-bad-lik-surf1}}
+		\frame{\includegraphics[width=\textwidth]{pdf/freqs1-freqs2-bad-lik-surf1}}
 	\end{center}
 \end{frame}
 }
@@ -287,28 +204,10 @@
 \begin{frame}[c,plain]{Allopolyploid subgenome model}
 	\framesubtitle{Log-likelihood surface: $F_{st}=0.5,\, \pi=0.922,\, p_1=0.999,\, p_2=0.414$}
 	\begin{center}
-		\frame{\includegraphics[width=\textwidth]{freqs1-freqs2-bad-lik-surf3}}
+		\frame{\includegraphics[width=\textwidth]{pdf/freqs1-freqs2-bad-lik-surf3}}
 	\end{center}
 \end{frame}
 }
-
-\begin{frame}[c,plain]{}
-
-	\begin{align*}
-		P(R|T,G,\epsilon) &\sim \text{binomial} \\[0.075in]
-		P(G|p,\phi) &\sim \text{beta-binomial} \\[0.075in]
-		P(p) &\sim \text{uniform}[0,1] \\[0.075in]
-		P(\phi) &\sim \text{uniform}(0,1000] \\[0.075in]
-	\end{align*}
-
-	%\begin{center}
-		%\includegraphics[width=0.7\textwidth]{fig/figure3-hex-heatmaps}
-	%\end{center}
-\end{frame}
-
-%%%%
-\section{Conclusions}
-%%%%
 
 \subsection*{Conclusions}
 
@@ -330,10 +229,6 @@
 
 \end{frame}
 
-%%%%
-\section*{}
-%%%%
-
 \begin{frame}[t,plain]{Code availability}
 	\fontsize{10pt}{10}\selectfont
 	\begin{itemize}
@@ -346,30 +241,25 @@
 		\item Data and code for the simulation study and making the figures are on GitHub -- \url{https://github.com/pblischak/polyfreqs-ms-data}.
 		\vspace{0.2in}
 
-		\item Presentation slides are on fig\textbf{share}, and the \LaTeX{} source code is also on GitHub -- \url{https://github.com/pblischak/botany2015}.
+		\item Presentation slides are on fig\textbf{share}, and the \LaTeX{} source code is also on GitHub -- \url{https://github.com/pblischak/evolution2016}.
 	\end{itemize}
 	\vspace{0.15in}
 
-	{\Large \alert{All these links are in the GitHub repository for this presentation: \textbf{pblischak/botany2015}.}}
+	{\Large \alert{All these links are in the GitHub repository for this presentation: \textbf{pblischak/evolution2016}.}}
 
 	\hfill {\tiny \#openscience}
 \end{frame}
 
 \begin{frame}[t,plain]{Acknowledgments}
-	\begin{columns}[onlytextwidth]
-	\column{0.4\textwidth}
-	\begin{itemize}
-		\item Aaron Wenzel, and members of the Wolfe and Kubatko labs.
-		\item Ohio Supercomputer Center (Simulations).
-		\item American Society of Plant Taxonomists (Travel Award).
-		\item National Science Foundation (Funding).
-	\end{itemize}
+  \vspace{0.2in}
 
-	\column{0.4\textwidth}
-	\begin{center}
-	%\includegraphics[width=0.85\textwidth]{fig/logos}
-	\end{center}
-	\end{columns}
+  \begin{itemize}
+    \setlength\itemsep{0.3in}
+    \item John Novembre, Xin He, Matthew Stephens, and their lab members for the opportunity to present at U. of Chicago (and to John Blischak for organizing the visit).
+    \item My labmates in the Wolfe and Kubatko labs.
+    \item National Science Foundation for funding the larger project that includes the development of the models presented here.
+  \end{itemize}
+
 \end{frame}
 
 \begin{frame}[c,plain]{}
