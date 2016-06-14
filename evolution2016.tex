@@ -11,8 +11,6 @@
 \title[Developing pop-gen models for polyploids]{Developing models for genotype uncertainty, inbreeding, and allelic inheritance in non-model polyploids}
 \author[Blischak \textit{et al}.]{Paul Blischak$^1$ :: Laura Kubatko$^{1,2}$ :: Andrea Wolfe$^1$}
 
-%\institute[OSU]{{\small Dept. of Evolution, Ecology\\ and Organismal Biology\\[0.15in] \textsc{The Ohio State University}}}
-
 \date{}
 
 \definecolor{itemcol}{RGB}{0,128,255}
@@ -24,24 +22,10 @@
 \setbeamercolor{item}{fg=itemcol,bg=itemcol}
 \setbeamercolor{structure}{fg=itemcol!95!black}
 \setbeamercolor{background canvas}{bg=white!15!black}
-%\setbeamercolor{background canvas}{bg=back}
 \setbeamercolor{normal text}{fg=white!95!black, bg=white!95!black}
 \setbeamercolor{math text}{fg=white, bg=white}
-%\setbeamertemplate{items}[square]
-%\setbeamertemplate{items in toc shaded}[square]
-%\setbeamertemplate{items in toc}[square]
 
 \newcommand{\inline}[1]{\fcolorbox{white!15!black}{white!20!black}{\texttt{#1}}}
-
-\setbeamertemplate{navigation symbols}{% 
-%\insertslidenavigationsymbol 
-%\insertframenavigationsymbol 
-%\insertsubsectionnavigationsymbol 
-%\insertsectionnavigationsymbol 
-%\insertdocnavigationsymbol 
-%\insertbackfindforwardnavigationsymbol \hspace{1em}%
- \usebeamerfont{footline} \insertframenumber/\inserttotalframenumber% 
- }
 
 \begin{document}
 
@@ -69,20 +53,20 @@
   \vspace{0.3in}
   \pause
   
+  Recent whole genome duplication has been an important force in the evolution of many groups.
+  \vspace{0.3in}
+  \pause
+  
   \textbf{More than just plants}.
   \vspace{0.3in}
   \pause
-  
-  ...but mostly plants.
-  \vspace{0.3in}
-  \pause
-  
-  Common in several lineages of fish (sturgeon and salmon), amphibians (salamanders), and fungi (yeast).
+    
+  It is also common in several lineages of amphibians, fish, fungi, and others.
 
 \end{frame}
 
 \begin{frame}[t]{The world of polyploidy}
-\framesubtitle{Types of polyploids}
+\framesubtitle{Basic types of polyploids}
 
 	\onslide<2->{\textbf{Autopolyploids}:}
 
@@ -99,73 +83,30 @@
 \end{frame}
 
 \begin{frame}[t]{Non-model polyploids}
-  \vspace{0.3in}
+  \vspace{0.1in}
 
-  The majority of polyploid organisms have little to no genomic resources available.
+  The majority of polyploid organisms have little to no genomic resources available. \pause What do we do?
   \vspace{0.3in}
   \pause
   
-  There is a need to 
+  Techniques such as RAD sequencing have had success in non-model diploids---and polyploids too in some cases---but it is not nearly as common.
+  \vspace{0.3in}
+  \pause
   
-
+  \textbf{The main problem}: what can we do if we collect RAD data for a polyploid that we know almost nothing about?
+  \vspace{0.3in}
+  \pause
   
-  \onslide<4->{We need methods }
+  \textbf{We need methods...}
 
 \end{frame}
 
 \begin{frame}[t]{Polyploid pop-gen}
-  \framesubtitle{Challenges}
-  
+
   \vspace{0.1in}
-  The difficulties of making population genetic inferences in polyploids present themselves at two broad levels:
+  A simple model for genotypes and allele frequencies:
   \vspace{0.2in}
-  %\pause
-
-	\begin{enumerate}
-		\onslide<2->{\item \textbf{Allelic dosage}: difficult to determine the number of allele copies.}
-		\vspace{0.1in}
-		
-		\begin{itemize}
-			\onslide<3>{\item Ex: Two alleles are present in a tetraploid. Is the genotype ABBB, AABB, or AAAB?}
-		\end{itemize}
-		\vspace{0.2in}
-		\pause
-
-		\onslide<4->{\item \textbf{Allelic inheritance}: how do chromosomes pair during meiosis? Do subgenomes interact?}
-	\end{enumerate}
-	
-\end{frame}
-
-\begin{frame}[t]{Dealing with allelic dosage}
-	\pause
-	\vspace{0.1in}
-	Account for genotype uncertainty...
-	\vspace{0.2in}
-
-	\begin{itemize}
-	\setlength\itemsep{0.2in}
-		\item Our previous model used a hierarchical setup for high throughput sequencing (HTS) data, genotypes, and allele frequencies.
-		\vspace{0.1in}
-		\pause
-
-		\item Joint inference on genotypes and frequencies using Gibbs sampling (implemented in the R package \textbf{polyfreqs}).
-		\vspace{0.1in}
-		\pause
-
-		\item Turns out there is a better way \pause $\rightarrow$ (1) don't sample genotypes\pause, (2) don't use Gibbs sampling (too expensive).
-		\vspace{0.1in}
-
-	\end{itemize}
-
-\end{frame}
-
-\begin{frame}[t]{Dealing with allelic dosage}
-	\framesubtitle{Genotype likelihoods}
-
-	Instead, we pre-compute genotype likelihoods (e.g., using GATK) and directly calculate the sum over genotypes.
-	\vspace{0.2in}
-	\pause
-	
+  
 	$D$ -- HTS data (reads and error values)
 	
 	$m$ -- ploidy-level
@@ -173,23 +114,23 @@
 	$G$ -- genotype $(0,\dots,m)$
 	
 	$p$ -- allele frequency
-	
-
+		
 	\pause
 	\begin{equation*}
-		\mathcal{L}(G) = P(D|G).
-	\end{equation*}
-	\vspace{-0.1in}
-	
-	\begin{equation*}
-		\mathcal{L}(p) = P(D|p) = \sum_G P(D|G)P(G|p),
+		\onslide<2->{\mathcal{L}(G) = P(D|G)^*.}
 	\end{equation*}
 	\vspace{-0.2in}
-	\pause
 	
 	\begin{equation*}
-		= \sum_G \mathcal{L}(G)P(G|p).
+		\onslide<3->{\mathcal{L}(p) = P(D|p) = \sum_G P(D|G)P(G|p),}
 	\end{equation*}
+	\vspace{-0.2in}
+	
+	\begin{equation*}
+		\onslide<4->{= \sum_G \mathcal{L}(G)P(G|p).}
+	\end{equation*}
+	
+	\onslide<2->{\hfill {\tiny $^*$ genotype likelihood -- can be calculated with GATK\\ \hfill using loci clustered with PyRAD, for example}}
 
 \end{frame}
 
@@ -212,15 +153,32 @@ Allopolyploids inherit two($+$) sets of chromosomes with different ancestries \p
 
 \end{frame}
 
-\begin{frame}[t]{Dealing with inheritance patterns}
+\begin{frame}[t]{Modeling inheritance patterns}
+\vspace{0.2in}
+\pause
 
-  $F$-models for genetic correlations.
+  Among the most difficult challenges for analyzing polyploid data.
+  \vspace{0.3in}
+  \pause
+  
+  Our models attempt to be simple solutions to the many processes that likely affect inheritance in polyploids.
+  \vspace{0.3in}
+  \pause
+  
+  We do this using $F$-models for genetic correlations.
+  \vspace{0.3in}
+  \pause
+  
+  	\begin{enumerate}
+		\item Inbreeding/disequilibrium in autopolyploids.
+		\item Subgenome allele frequencies in allopolyploids.
+	\end{enumerate}
 
 \end{frame}
 
 \begin{frame}[t]{A disequilibrium model for autopolyploids}
 
-  In most models, $P(G|p)$ is binomially distributed, implying that genotypes are drawn in HW proportions.
+  In most models, $P(G|p)$ is binomially distributed $\rightarrow$ genotypes are in HW proportions.
   \vspace{0.3in}
   \pause
   
@@ -232,18 +190,19 @@ Allopolyploids inherit two($+$) sets of chromosomes with different ancestries \p
   \vspace{0.1in}
   
   \begin{equation}
-    P(G=a|p,\phi) = \frac{\mathcal{B}(a + p\phi, m - a + (1-p)\phi)}{\mathcal{B}(p\phi, (1-p)\phi)}.
+    P(G=a|p,\phi) = \frac{\mathcal{B}(a + p\phi, m - a + (1-p)\phi)}{\mathcal{B}(p\phi, (1-p)\phi)},
   \end{equation}
   \vspace{0.2in}
-  \pause
+
   
 
-Here, $\mathcal{B}()$ is the beta function, and $\phi$ is related to the inbreeding coefficient as $F = \sfrac{1}{(1+\phi)}$.
+with $a = 1,\dots,m$. \pause Here, $\mathcal{B}()$ is the beta function, and $\phi$ is related to the inbreeding coefficient as $F = \sfrac{1}{(1+\phi)}$.
 
 \end{frame}
 
 { \setbeamercolor{background canvas}{bg=white!20!black} \setbeamercolor{math text}{bg=itemcol, fg=itemcol}
-\begin{frame}[c,plain]{The effect of $F$}
+\begin{frame}[c,plain]{The effect of $F$ on the distribution genotypes}
+\pause
 
   \begin{center}
     \frame{\includegraphics[width=0.9\textwidth]{pdf/genotype-freqs-diseq}}
@@ -253,8 +212,9 @@ Here, $\mathcal{B}()$ is the beta function, and $\phi$ is related to the inbreed
 
 }
 
-{ \setbeamercolor{background canvas}{bg=white!20!black}
-\begin{frame}[c,plain]{Disequilibrium model}
+{ \setbeamercolor{background canvas}{bg=white!20!black} \setbeamercolor{math text}{bg=itemcol, fg=itemcol}
+\begin{frame}[c,plain]{Likelihood surface for $F$ and $p$}
+\pause
 	\framesubtitle{\hspace{15pt}}
 	\begin{center}
 		\frame{\includegraphics[width=\textwidth]{pdf/freq-phi-lik-surf2}}
@@ -263,9 +223,8 @@ Here, $\mathcal{B}()$ is the beta function, and $\phi$ is related to the inbreed
 }
 
 \begin{frame}[t]{A subgenome model for allopolyploids}
-\pause
 
-Consider the simple case of two sets of chromosomes with different ancestry that do not interact (no homoeologous recombination).
+Switching gears to allopolyploids, \pause consider the simple case of two subgenomes with different ancestry that are independent.
 \vspace{0.3in}
 \pause
 
@@ -288,7 +247,7 @@ p_i|\pi,\theta \sim \text{beta}(\pi\theta,(1-\pi)\theta), \quad \text{for } i=1,
 
 \begin{frame}[t]{A subgenome model for allopolyploids}
 
-Genotypes are now a mixture of draws from the two subgenomes, each with a potentially different allele frequency.
+Genotypes in this case are a mixture of draws from the two subgenomes, each with a potentially different allele frequency.
 \vspace{0.25in}
 \pause
 
@@ -296,20 +255,25 @@ Given the ploidy of the two subgenomes ($m_1$,$m_2$), the genotype can be modele
 \vspace{0.25in}
 \pause
 
-This is a special case of the poisson-binomial distribution, which models binomial experiments when the probability of success is not the same for each trial.
+This is a special case of the poisson-binomial distribution.
 \pause
 
 \begin{align}
 P(G&=a|p_1,p_2,m_1,m_2) \nonumber \\[0.05in]
 &= P(G=i|p_1,m_1) + P(G=j|p_2,m_2), \nonumber \\[0.05in]
-&\text{ for } i=1,\dots,m_1; \; j=1,\ldots,m_2; \; i+j=a.
+&\text{ for } i=1,\dots,m_1; \; j=1,\ldots,m_2; \; i+j=a,
 \end{align}
+
+\vspace{-0.1in}
+with $a = 0,\dots,m_1+m_2$.
 
 \end{frame}
 
-{ \setbeamercolor{background canvas}{bg=white!20!black} %\setbeamercolor{math text}{fg=itemcol, bg=itemcol}
-\begin{frame}[c,plain]{Subgenome model}
+{ \setbeamercolor{background canvas}{bg=white!20!black} %\setbeamercolor{math text}{bg=itemcol, fg=itemcol}
+\begin{frame}[c,plain]{\setbeamercolor{math text}{fg=itemcol, bg=itemcol}Likelihood surface for $p_1$ and $p_2$: low drift}
+
 	\framesubtitle{$F_{st}=0.1$}
+	\pause
 	\begin{center}
 		\frame{\includegraphics[width=\textwidth]{pdf/freq1-freq2-lik-surf1}}
 	\end{center}
@@ -317,7 +281,7 @@ P(G&=a|p_1,p_2,m_1,m_2) \nonumber \\[0.05in]
 }
 
 { \setbeamercolor{background canvas}{bg=white!20!black} %\setbeamercolor{math text}{fg=itemcol, bg=itemcol}
-\begin{frame}[c,plain]{Subgenome model}
+\begin{frame}[c,plain]{\setbeamercolor{math text}{fg=itemcol, bg=itemcol}Likelihood surface for $p_1$ and $p_2$: high drift}
 	\framesubtitle{$F_{st}=0.5,\, \pi=0.475,\, p_1=0.962,\, p_2=0.343$}
 	\begin{center}
 		\frame{\includegraphics[width=\textwidth]{pdf/freqs1-freqs2-bad-lik-surf1}}
@@ -325,14 +289,14 @@ P(G&=a|p_1,p_2,m_1,m_2) \nonumber \\[0.05in]
 \end{frame}
 }
 
-{ \setbeamercolor{background canvas}{bg=white!20!black} %\setbeamercolor{math text}{fg=itemcol, bg=itemcol}
-\begin{frame}[c,plain]{Subgenome model}
-	\framesubtitle{$F_{st}=0.5,\, \pi=0.922,\, p_1=0.999,\, p_2=0.414$}
-	\begin{center}
-		\frame{\includegraphics[width=\textwidth]{pdf/freqs1-freqs2-bad-lik-surf3}}
-	\end{center}
-\end{frame}
-}
+%{ \setbeamercolor{background canvas}{bg=white!20!black} %\setbeamercolor{math text}{fg=itemcol, bg=itemcol}
+%\begin{frame}[c,plain]{\setbeamercolor{math text}{fg=itemcol, bg=itemcol}Likelihood surface for $p_1$ and $p_2$: high drift}
+%	\framesubtitle{$F_{st}=0.5,\, \pi=0.922,\, p_1=0.999,\, p_2=0.414$}
+%	\begin{center}
+%		\frame{\includegraphics[width=\textwidth]{pdf/freqs1-freqs2-bad-lik-surf3}}
+%	\end{center}
+%\end{frame}
+%}
 
 
 \begin{frame}[t]{Conclusions and future directions}
@@ -340,39 +304,41 @@ P(G&=a|p_1,p_2,m_1,m_2) \nonumber \\[0.05in]
 	\fontsize{10pt}{10}\selectfont
 	\begin{enumerate}
 		\item{Conclusions:}
-		\setlength\itemsep{0.1in}
+		\vspace{0.1in}
+		\setlength\itemsep{0.2in}
 		\begin{itemize}
-			\setlength\itemsep{0.1in}
+			\setlength\itemsep{0.2in}
 			\item $F$-models have great potential for helping make inferences in non-model polyploids.
-			\vspace{0.2in}
+			\item Allopolyploid model works best for closely related subgenomes.
 		\end{itemize}
 		\pause
 		\item{Future directions:}
-		\setlength\itemsep{0.1in}
+		\vspace{0.1in}
+		\setlength\itemsep{0.2in}
 		\begin{itemize}
-		\setlength\itemsep{0.1in}
+		\setlength\itemsep{0.2in}
 			\item Include parental data in allopolyploid model if available and develop a model selection framework for testing allopolyploid parentage. \pause
-			\item Currently developing software 
+			\item Currently developing software to perform inference with these models (plus a few others). Hoping to have a beta version in late summer.
 		\end{itemize}
 	\end{enumerate}
 
 \end{frame}
 
-\begin{frame}[t,plain]{Code availability}
+\begin{frame}[c]{Code availability}
 	\fontsize{10pt}{10}\selectfont
 	\begin{itemize}
-	\setlength\itemsep{0.2in}
+	\setlength\itemsep{0.3in}
 
-		\item Presentation slides are on fig\textbf{share}.
+		\item Presentation slides and notes are on fig\textbf{share}.
 		
-		\item \LaTeX{} source code is on GitHub:\\[0.05in] \url{https://github.com/pblischak/evolution2016}.
+		\item R scripts for the simulations and other code are on GitHub:\\[0.05in]\url{https://github.com/pblischak/evolution2016}.
 		
-		\item R package (\textbf{ppgtkR}) and code for simulating data under the different models, as well as calculating and plotting the log-likelihood surface, are also on GitHub: \\[0.05in] \url{https://github.com/pblischak/ppgtkR}
 		
 	\end{itemize}
-	\vspace{0.15in}
+	\vspace{0.3in}
 
-	{\Large \alert{All these links are in the GitHub repository for this presentation: \textbf{pblischak/evolution2016}.}}
+	{\Large \alert{Links for everything are in the GitHub repository for this presentation: \textbf{pblischak/evolution2016}.}}
+	\vspace{0.2in}
 
 	\hfill {\tiny \#openscience}
 \end{frame}
