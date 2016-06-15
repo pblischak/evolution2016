@@ -1,4 +1,4 @@
-\documentclass[presentation,sansserif]{beamer}
+\documentclass[presentation,sansserif,12pt]{beamer}
 \usefonttheme[onlymath]{serif}
 %\renewcommand\mathfamilydefault{ppl}
 %\usetheme{Warsaw}
@@ -6,6 +6,7 @@
 \usepackage {mathpazo}
 \usepackage{graphicx}
 \usepackage{blindtext}
+\usepackage{tcolorbox}
 \usepackage{xfrac}
 
 \title[Developing pop-gen models for polyploids]{Developing models for genotype uncertainty, inbreeding, and allelic inheritance in non-model polyploids}
@@ -50,18 +51,6 @@
 
 
 \begin{frame}[t]{Contemporary polyploidy}
-  \vspace{0.3in}
-  \pause
-  
-  Recent whole genome duplication has been an important force in the evolution of many groups.
-  \vspace{0.3in}
-  \pause
-  
-  \textbf{More than just plants}.
-  \vspace{0.3in}
-  \pause
-    
-  It is also common in several lineages of amphibians, fish, fungi, and others.
 
 \end{frame}
 
@@ -85,15 +74,17 @@
 \begin{frame}[t]{Non-model polyploids}
   \vspace{0.1in}
 
-  The majority of polyploid organisms have little to no genomic resources available. \pause What do we do?
+  The majority of polyploid organisms have little to no genomic resources available.
   \vspace{0.3in}
   \pause
   
-  Techniques such as RAD sequencing have had success in non-model diploids---and polyploids too in some cases---but it is not nearly as common.
-  \vspace{0.3in}
-  \pause
+  \textbf{The main problem}: what can we do if we collect data for a polyploid that we know almost nothing about?
   
-  \textbf{The main problem}: what can we do if we collect RAD data for a polyploid that we know almost nothing about?
+  %Techniques such as RAD sequencing have had success in non-model diploids---and polyploids too in some cases---but it is not nearly as common.
+  %\vspace{0.3in}
+  %\pause
+  
+
   \vspace{0.3in}
   \pause
   
@@ -145,11 +136,11 @@
   \vspace{0.25in}
   \pause
 
-Mixed mating systems and double reduction can make HWE a poor assumption in autopolyploids \pause $\rightarrow$ inbreeding and increased homozygosity.
+Mixed mating systems, double reduction, etc. make HWE a poor assumption in autopolyploids \pause $\rightarrow$ excess homozygosity.
 \vspace{0.25in}
 \pause
 
-Allopolyploids inherit two($+$) sets of chromosomes with different ancestries \pause $\rightarrow$ assuming draws from a single allele pool does not reflect their hybrid origin.
+Allopolyploids inherit two($+$) sets of chromosomes with different ancestries \pause $\rightarrow$ don't have a single allele pool.
 
 \end{frame}
 
@@ -161,7 +152,7 @@ Allopolyploids inherit two($+$) sets of chromosomes with different ancestries \p
   \vspace{0.3in}
   \pause
   
-  The models we propose here attempt to be simple solutions to the many processes that likely affect inheritance in polyploids.
+  The models we propose here attempt to be simple solutions. \textbf{We don't model a specific process}.
   \vspace{0.3in}
   \pause
   
@@ -176,28 +167,69 @@ Allopolyploids inherit two($+$) sets of chromosomes with different ancestries \p
 
 \end{frame}
 
+\begin{frame}[t]{Contemporary polyploidy}
+\framesubtitle{Basic types of polyploids}
+
+
+	\begin{tcolorbox}[colframe=itemcol, colback=white!40!black, coltext=white!95!black]
+	\textbf{Autopolyploids}:
+
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{eps/autopolyploid-formation}
+	\end{center}
+	
+	\end{tcolorbox}
+	
+	Allopolyploids:
+	
+	\begin{center}
+		{\includegraphics[width=0.5\textwidth]{eps/allopolyploid-formation}}
+	\end{center}
+
+\end{frame}
+
 \begin{frame}[t]{A disequilibrium model for autopolyploids}
 
   In most models, $P(G|p)$ is binomially distributed $\rightarrow$ genotypes are in HW proportions.
   \vspace{0.3in}
   \pause
   
-  To relax this, we use a different probability distribution for genotypes: the beta-binomial.
+  We use a different distribution: the beta-binomial.
   \vspace{0.3in}
   \pause
   
-  Using an additional parameter, $\phi$, the probability distribution for genotypes becomes
+  Adding a parameter, $\phi$, the probability distribution for genotypes becomes
   \vspace{0.1in}
   
   \begin{equation}
     P(G=a|p,\phi) = \frac{\mathcal{B}(a + p\phi, m - a + (1-p)\phi)}{\mathcal{B}(p\phi, (1-p)\phi)},
   \end{equation}
-  \vspace{0.2in}
 
+with $a = 0,\dots,m$.
+  
+  \end{frame}
+  
+  \begin{frame}[t]{A disequilibrium model for autopolyploids}
+  
+  This is an $F$-model for \textbf{correlated allele draws}.
+  \vspace{0.3in}
+  \pause
+  
+  $\phi$ controls the correlation between alleles in the genotype \pause \\[0.05in]\hspace{5pt}$\rightarrow$ higher correlation, more homozygosity.
+  \vspace{0.3in}
+  \pause
   
 
-with $a = 1,\dots,m$. \pause Here, $\mathcal{B}()$ is the beta function, and $\phi$ is related to the inbreeding coefficient as $F = \sfrac{1}{(1+\phi)}$.
+  \begin{tcolorbox}[colframe=itemcol, colback=white!40!black, coltext=white!95!black]
+   $\phi$ is related to the inbreeding coefficient:
+   
+   \begin{equation*}
+   	F = \frac{1}{1+\phi}.
+  \end{equation*}
+  
+  \end{tcolorbox}
 
+ 
 \end{frame}
 
 { \setbeamercolor{background canvas}{bg=white!20!black} \setbeamercolor{math text}{bg=itemcol, fg=itemcol}
@@ -212,23 +244,42 @@ with $a = 1,\dots,m$. \pause Here, $\mathcal{B}()$ is the beta function, and $\p
 
 }
 
-{ \setbeamercolor{background canvas}{bg=white!20!black} \setbeamercolor{math text}{bg=itemcol, fg=itemcol}
-\begin{frame}[c,plain]{Likelihood surface for $F$ and $p$}
-\pause
-	\framesubtitle{\hspace{15pt}}
+%{ \setbeamercolor{background canvas}{bg=white!20!black} \setbeamercolor{math text}{bg=itemcol, fg=itemcol}
+%\begin{frame}[c,plain]{Likelihood surface for $F$ and $p$}
+%\pause
+%	\framesubtitle{\hspace{15pt}}
+%	\begin{center}
+%		\frame{\includegraphics[width=\textwidth]{pdf/freq-phi-lik-surf2}}
+%	\end{center}
+%\end{frame}
+%}
+
+\begin{frame}[t]{Contemporary polyploidy}
+\framesubtitle{Basic types of polyploids}
+
+	Autopolyploids:
+
 	\begin{center}
-		\frame{\includegraphics[width=\textwidth]{pdf/freq-phi-lik-surf2}}
+		\includegraphics[width=0.5\textwidth]{eps/autopolyploid-formation}
 	\end{center}
+	
+	\begin{tcolorbox}[colframe=itemcol, colback=white!40!black, coltext=white!95!black]
+	\textbf{Allopolyploids}:
+	
+	\begin{center}
+		{\includegraphics[width=0.5\textwidth]{eps/allopolyploid-formation}}
+	\end{center}
+	\end{tcolorbox}
+
 \end{frame}
-}
 
 \begin{frame}[t]{A subgenome model for allopolyploids}
 
-Switching gears to allopolyploids, \pause consider the simple case of two subgenomes with different ancestry that are independent.
+Consider the simplest case of two subgenomes.
 \vspace{0.3in}
 \pause
 
-We use a commonly employed $F$-model for correlated allele frequencies in the two subgenomes: divergence from a common ancestor with drift.
+We use an $F$-model for \textbf{correlated allele frequencies}: divergence from a common ancestor with drift.
 \vspace{0.3in}
 \pause
 
@@ -247,25 +298,20 @@ p_i|\pi,\theta \sim \text{beta}(\pi\theta,(1-\pi)\theta), \quad \text{for } i=1,
 
 \begin{frame}[t]{A subgenome model for allopolyploids}
 
-Genotypes in this case are a mixture of draws from the two subgenomes, each with a potentially different allele frequency.
-\vspace{0.25in}
+Assume we know the ploidy of the two subgenomes ($m_1$,$m_2$), \textbf{but we don't use parental information}.
+\vspace{0.3in}
 \pause
 
-Given the ploidy of the two subgenomes ($m_1$,$m_2$), the genotype can be modeled as a sum of two binomially distributed random variable.
-\vspace{0.25in}
-\pause
-
-This is a special case of the poisson-binomial distribution.
+The genotype distribution is a sum of two binomials:
 \pause
 
 \begin{align}
 P(G&=a|p_1,p_2,m_1,m_2) \nonumber \\[0.05in]
-&= P(G=i|p_1,m_1) + P(G=j|p_2,m_2), \nonumber \\[0.05in]
+&= P(G_1=i|p_1,m_1) + P(G_2=j|p_2,m_2), \nonumber \\[0.05in]
 &\text{ for } i=1,\dots,m_1; \; j=1,\ldots,m_2; \; i+j=a,
 \end{align}
 
-\vspace{-0.1in}
-with $a = 0,\dots,m_1+m_2$.
+with $a = 0,\dots,m_1+m_2$ and $G = G_1 + G_2$.
 
 \end{frame}
 
@@ -289,6 +335,15 @@ with $a = 0,\dots,m_1+m_2$.
 \end{frame}
 }
 
+{ \setbeamercolor{background canvas}{bg=white!20!black} %\setbeamercolor{math text}{fg=itemcol, bg=itemcol}
+\begin{frame}[c,plain]{\setbeamercolor{math text}{fg=itemcol, bg=itemcol}Likelihood surface for $p_1$ and $p_2$: high drift}
+	\framesubtitle{$F_{st}=0.5,\, \pi=0.475,\, p_1=0.962,\, p_2=0.343$}
+	\begin{center}
+		\frame{\includegraphics[width=\textwidth]{eps/freqs1-freqs2-bad-lik-surf1-circled}}
+	\end{center}
+\end{frame}
+}
+
 %{ \setbeamercolor{background canvas}{bg=white!20!black} %\setbeamercolor{math text}{fg=itemcol, bg=itemcol}
 %\begin{frame}[c,plain]{\setbeamercolor{math text}{fg=itemcol, bg=itemcol}Likelihood surface for $p_1$ and $p_2$: high drift}
 %	\framesubtitle{$F_{st}=0.5,\, \pi=0.922,\, p_1=0.999,\, p_2=0.414$}
@@ -301,7 +356,6 @@ with $a = 0,\dots,m_1+m_2$.
 
 \begin{frame}[t]{Conclusions and future directions}
 	\pause
-	\fontsize{10pt}{10}\selectfont
 	\begin{enumerate}
 		\item{Conclusions:}
 		\vspace{0.1in}
@@ -318,14 +372,14 @@ with $a = 0,\dots,m_1+m_2$.
 		\begin{itemize}
 		\setlength\itemsep{0.2in}
 			\item Include parental data in allopolyploid model if available and develop a model selection framework for testing allopolyploid parentage. \pause
-			\item Currently developing software to perform inference with these models (plus a few others). Hoping to have a beta version in late summer.
+			\item Currently developing software to perform inference with these models (plus a few others).
 		\end{itemize}
 	\end{enumerate}
 
 \end{frame}
 
 \begin{frame}[c]{Code availability}
-	\fontsize{10pt}{10}\selectfont
+
 	\begin{itemize}
 	\setlength\itemsep{0.3in}
 
@@ -337,7 +391,7 @@ with $a = 0,\dots,m_1+m_2$.
 	\end{itemize}
 	\vspace{0.3in}
 
-	{\Large \alert{Links for everything are in the GitHub repository for this presentation: \textbf{pblischak/evolution2016}.}}
+	{\large \alert{Links for everything are in the GitHub repository for this presentation: \textbf{pblischak/evolution2016}.}}
 	\vspace{0.2in}
 
 	\hfill {\tiny \#openscience}
